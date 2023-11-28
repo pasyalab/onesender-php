@@ -487,4 +487,24 @@ class OneSender {
     public function getInvalidMessages(): array {
         return $this->invalidMessages;
     }
+
+    /**
+     * Parses a template string by replacing placeholders with corresponding values from the given data array.
+     *
+     * @param string $template The template string containing placeholders in the format '{placeholder}'.
+     * @param array $data An associative array where keys are placeholders and values are the replacements.
+     * @return string The parsed template string with replaced placeholders.
+     */
+    public static function parse_template(string $template = '', array $data = []): string {
+        $pattern = '/\{ ?([^}]+) ?\}/s';
+        preg_match_all($pattern, $template, $matches);
+
+        foreach ($matches[1] as $match) {
+            $key = trim($match);
+            $replacement = isset($data[$key]) ? $data[$key] : '';
+            $template = str_replace("{{$match}}", $replacement, $template);
+        }
+
+        return $template;
+    }
 }
