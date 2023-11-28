@@ -21,7 +21,8 @@ $sender->sendText(
     text: 'Selamat pagi, Cikgu!',
 );
 
-// Get response dan error
+// Atau
+// Kirim pesan dan ambil data [response, error]
 list($response, $error) = $sender->sendText(
     phone: '628120000001',
     text: 'Selamat pagi, Cikgu!',
