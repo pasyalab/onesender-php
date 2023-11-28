@@ -100,6 +100,24 @@ Cek list pesan yang invalid atau tidak bisa dikirim
 $sender->getInvalidMessages();
 ```
 
+## Parse template
+```
+$shortcode = [
+    'name' => 'John smith',
+    'gender' => 'Male',
+    'weight' => '60',
+];
+
+$template = "Report:
+{name} is {gender} and weighs {weight} kg.
+End";
+
+$text = OneSender::parseTemplate($template, $shortcode);
+
+var_dump($text);
+
+```
+
 ### Troubleshoot
 
 ### Pesan terkirim dobel / lebih dari satu
