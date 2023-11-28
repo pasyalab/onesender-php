@@ -495,6 +495,10 @@ class OneSender {
      * @param array $data An associative array where keys are placeholders and values are the replacements.
      * @return string The parsed template string with replaced placeholders.
      */
+    public static function parseTemplate(string $template = '', array $data = []): string {
+        return $this->parse_template($template, $data);
+    }
+
     public static function parse_template(string $template = '', array $data = []): string {
         $pattern = '/\{ ?([^}]+) ?\}/s';
         preg_match_all($pattern, $template, $matches);
