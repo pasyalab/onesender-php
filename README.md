@@ -70,9 +70,45 @@ var_dump($error);
 var_dump($sender->getInvalidMessages());
 ```
 
+## Kirim ke group
+```PHP
+$sender->sendText(
+    phone: '628120000001-123456789@g.us',
+    text: 'Pesan ke group',
+);
+```
+
+
+## Kirim satu pesan ke beberapa nomor
+```PHP
+
+$sender->sendText(
+    phone: '628120000001,628120000002',
+    text: 'Semua tujuan berupa nomor kontak',
+);
+
+$sender->sendText(
+    phone: '628120000001, 628120000001-123456789@g.us',
+    text: 'Kombinasi nomor kontak dan group',
+);
+```
+
 ## Error message
 Cek list pesan yang invalid atau tidak bisa dikirim
 
 ```PHP
 $sender->getInvalidMessages();
 ```
+
+### Troubleshoot
+
+### Pesan terkirim dobel / lebih dari satu
+Untuk mengantisipasi agar pesan tidak terkirim beberapa kali. Ketika terjadi error di runtime curl/php. Maka gunakan parameter `unique` dengan value `true`.
+
+```PHP
+$sender->sendText(
+    phone: '628120000001',
+    text: 'Selamat pagi, Cikgu!',
+    unique: true,
+);
+``` 
