@@ -496,7 +496,7 @@ class OneSender {
      * @return string The parsed template string with replaced placeholders.
      */
     public static function parseTemplate(string $template = '', array $data = []): string {
-        return $this->parse_template($template, $data);
+        return self::parse_template($template, $data);
     }
 
     public static function parse_template(string $template = '', array $data = []): string {
