@@ -15,13 +15,13 @@ $sender = OneSender::instance(
     validateUrl: true, // opsional. Check link pesan gambar valid atau tidak
 );
 
-
+// Kirim pesan text
 $sender->sendText(
     phone: '628120000001',
     text: 'Selamat pagi, Cikgu!',
 );
 
-// Get response response
+// Get response dan error
 list($response, $error) = $sender->sendText(
     phone: '628120000001',
     text: 'Selamat pagi, Cikgu!',
