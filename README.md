@@ -101,7 +101,7 @@ $sender->getInvalidMessages();
 ```
 
 ## Parse template
-```
+```PHP
 $shortcode = [
     'name' => 'John smith',
     'gender' => 'Male',
