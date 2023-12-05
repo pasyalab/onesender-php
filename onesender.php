@@ -67,7 +67,7 @@ class OneSender {
             ];
 
             $tag = $this->randomTag();
-            $tag = $this->applyFilters('message_tag', $tag);
+            $tag = $this->applyFilters('message_tag', $tag, $message);
 
             if ($unique) {
                 $message['tag'] = $tag;
