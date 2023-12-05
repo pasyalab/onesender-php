@@ -140,14 +140,14 @@ $priority | integer | prioritas, nilai paling dipanggil terlebih dahulu
 
 ### api_url
 ```PHP
-$sender->addFilter('api_url', function($apiUrl) {
+$sender->addFilter('api_url', function($apiUrl, $messages) {
     return $apiUrl;
 }, 17);
 ```
 
 ### api_key
 ```PHP
-$sender->addFilter('api_key', function($apiKey) {
+$sender->addFilter('api_key', function($apiKey, $messages) {
     return $apiKey;
 }, 17);
 ```
@@ -163,6 +163,13 @@ $sender->addFilter('recipients', function($recipients) {
 ```PHP
 $sender->addFilter('messages', function($messages) {
     $messages[0]['text']['body'] = $messages[0]['text']['body'] .PHP_EOL . time();
+    return $messages;
+}, 17);
+```
+
+### message_tag
+```PHP
+$sender->addFilter('message_tag', function($tag, $message) {
     return $messages;
 }, 17);
 ```
