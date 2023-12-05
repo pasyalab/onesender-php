@@ -8,7 +8,7 @@ Library PHP untuk aplikasi OneSender
 require_once 'onesender.php';
 
 // Versi PHP >= 8.0
-$sender = OneSender::instance(
+$sender = OneSender::setup(
     url: 'https://myapi.com/api/v1/messages',
     key: 'uuuuuuuu.123456789012345678901234567890',
     countryCode: '62', // opsional. Default kode negara
