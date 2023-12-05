@@ -118,6 +118,56 @@ var_dump($text);
 
 ```
 
+## Filter
+
+Filter digunakan untuk mengubah data tanpa perlu mengubah kode library.
+Contoh:
+```PHP
+$sender->addFilter('messages', function($messages) {
+    // Ubah $messages
+    return $messages;
+}, 17);
+```
+
+
+**Parameter**
+
+Variable | Tipe | Deskripsi
+---|---|---
+$hook | string | id variabel
+$callback | Closure function | function untuk memproses data
+$priority | integer | prioritas, nilai paling dipanggil terlebih dahulu
+
+### api_url
+```PHP
+$sender->addFilter('api_url', function($apiUrl) {
+    return $apiUrl;
+}, 17);
+```
+
+### api_key
+```PHP
+$sender->addFilter('api_key', function($apiKey) {
+    return $apiKey;
+}, 17);
+```
+
+### recipients
+```PHP
+$sender->addFilter('recipients', function($recipients) {
+    return $recipients;
+}, 17);
+```
+
+### messages
+```PHP
+$sender->addFilter('messages', function($messages) {
+    $messages[0]['text']['body'] = $messages[0]['text']['body'] .PHP_EOL . time();
+    return $messages;
+}, 17);
+```
+
+
 ### Troubleshoot
 
 ### Pesan terkirim dobel / lebih dari satu
