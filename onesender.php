@@ -22,7 +22,7 @@ class OneSender {
         return self::instance($url, $key,  $countryCode, $validateUrl, $app);
     }
 
-    const VERSION = '1.1.0';
+    const VERSION = '1.1.1';
 
     protected string $countryCode = '62';
     protected string $apiUrl;
@@ -159,12 +159,9 @@ class OneSender {
         $messages = $this->applyFilters('messages', $messages);
         $this->messages = $messages;
 
-        $apiUrl = $this->apiUrl;
-        $apiKey = $this->apiKey;
-
-        $apiUrl = $this->applyFilters('api_url', $apiUrl);
-        $apiKey = $this->applyFilters('api_key', $apiKey);
-
+        $apiUrl = $this->applyFilters('api_url', $this->apiUrl);
+        $apiKey = $this->applyFilters('api_key', $this->apiKey);
+        
         $headers = array(
             'Authorization: Bearer ' . $apiKey,
             'Content-Type: application/json'
@@ -384,6 +381,8 @@ class OneSender {
             'callback' => $callback,
             'priority' => $priority
         );
+
+        return $this;
     }
 
     public function applyFilters($hook, ...$args) {
