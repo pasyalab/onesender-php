@@ -32,6 +32,19 @@ class OneSender {
         return self::$instance;
     }
 
+    /**
+     * Get an instance of the OneSender class.
+     * 
+     * @param string $url The API URL.
+     * @param string $key The API key.
+     * @param string $countryCode The country code.
+     * @param bool $validateUrl Whether to validate URLs.
+     * @return OneSender The OneSender instance.
+     */
+    public static function setup($url = '', $key = '',  $countryCode = '62', $validateUrl = false): OneSender {
+        return self::instance($url, $key,  $countryCode, $validateUrl);
+    }
+
     /** @var string $countryCode The default country code. */
     protected string $countryCode = '62';
 
