@@ -22,7 +22,7 @@ class OneSender {
         return self::instance($url, $key,  $countryCode, $validateUrl, $app);
     }
 
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
 
     protected string $countryCode = '62';
     protected string $apiUrl;
@@ -43,7 +43,7 @@ class OneSender {
         $this->app = $app;
     }
 
-    public function sendText(string $phone = '', string $text = '', $unique = false, $aggregate = false): mixed {
+    public function sendText(string $phone = '', string $text = '', $unique = false, $aggregate = false) {
         if (empty($text) || empty($phone)) {
             return [false, 'Text and phone number are required'];
         }
@@ -85,15 +85,15 @@ class OneSender {
         return $this->deliver($messages);
     }
 
-    public function sendImage(string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false): mixed  {
+    public function sendImage(string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false)  {
         return $this->sendMedia('image', $phone, $url, $caption, $unique, $aggregate);
     }
 
-    public function sendDocument(string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false): mixed  {
+    public function sendDocument(string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false)  {
         return $this->sendMedia('document', $phone, $url, $caption, $unique, $aggregate);
     }
 
-    public function sendMedia(string $type = 'image', string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false): mixed {
+    public function sendMedia(string $type = 'image', string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false) {
         if (empty($url) || empty($phone)) {
             $this->addInvalidMedia($type, $phone, $url, $caption, 'Url and phone number are required');
 
