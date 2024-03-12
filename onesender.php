@@ -89,19 +89,23 @@ class OneSender {
         return $this->sendMedia('image', $phone, $url, $caption, $unique, $aggregate);
     }
 
-    public function sendDocument(string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false)  {
-        return $this->sendMedia('document', $phone, $url, $caption, $unique, $aggregate);
+    public function sendDocument(string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false, $filename = 'document')  {
+        $params = [
+            'filename' => $filename,
+        ];
+
+        return $this->sendMedia('document', $phone, $url, $caption, $unique, $aggregate, $params);
     }
 
-    public function sendMedia(string $type = 'image', string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false) {
+    public function sendMedia(string $type = 'image', string $phone = '', string $url = '', string $caption = '', $unique = false, $aggregate = false, $params = []) {
         if (empty($url) || empty($phone)) {
-            $this->addInvalidMedia($type, $phone, $url, $caption, 'Url and phone number are required');
+            $this->addInvalidMedia($type, $phone, $url, $caption, 'Url and phone number are required', $params);
 
             return $aggregate ? $this : [false, 'Url and phone number are required'];
         }
 
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            $this->addInvalidMedia($type, $phone, $url, $caption, 'Invalid url');
+            $this->addInvalidMedia($type, $phone, $url, $caption, 'Invalid url', $params);
 
             return $aggregate ? $this : [false, 'Invalid url'];
         } 
@@ -114,12 +118,12 @@ class OneSender {
         $phones = $this->parsePhones($phone);
 
         if (empty($phones)) {
-            $this->addInvalidMedia($type, $phone, $url, $caption, 'Invalid phone number');
+            $this->addInvalidMedia($type, $phone, $url, $caption, 'Invalid phone number', $params);
 
             return $aggregate ? $this : [false, 'Invalid phone number'];
         }
 
-        $messages = $this->map($phones, function($phone) use ($type, $url, $caption, $unique) {
+        $messages = $this->map($phones, function($phone) use ($type, $url, $caption, $unique, $params) {
 
             $msg = [
                 'link' => $url,
@@ -127,6 +131,10 @@ class OneSender {
 
             if (!empty($caption)) {
                 $msg['caption'] = $caption;
+            }
+
+            if ($type === 'document') {
+                $msg['filename'] = $params['filename'] ?? 'document';
             }
 
             $message = [
@@ -229,7 +237,7 @@ class OneSender {
 
             return [
                 'number' => $number,
-                'type' => 'personal',
+                'type' => 'individual',
             ];
         });
 
@@ -267,7 +275,7 @@ class OneSender {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => $this->apiUrl,
+            CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => true,
             CURLOPT_NOBODY => true,
@@ -291,7 +299,6 @@ class OneSender {
         $headers = substr($response, 0, $headerSize);
 
         preg_match('/content-type: ([\w\/]+)/', strtolower($headers), $matches);
-
         if (!isset($matches[1])) {
             return false;
         } 
@@ -326,7 +333,7 @@ class OneSender {
         $this->invalidMessages = array_merge($this->invalidMessages, [$invalidMessage]);
     }
 
-    private function addInvalidDocument(string $phone, string $url, string $caption, string $error): void {
+    private function addInvalidDocument(string $phone, string $url, string $caption, string $error, $params): void {
         $invalidMessage = [
             'type' => 'document',
             'to' => $phone,
@@ -334,17 +341,18 @@ class OneSender {
             'document' => [
                 'link' => $url,
                 'caption' => $caption,
+                'filename' => $params['filename'] ?? 'document',
             ],
             'error' => $error,
         ];
         $this->invalidMessages = array_merge($this->invalidMessages, [$invalidMessage]);
     }
 
-    private function addInvalidMedia(string $type, string $phone, string $url, string $caption, string $error): void {
+    private function addInvalidMedia(string $type, string $phone, string $url, string $caption, string $error, $params = []): void {
         if ($type === 'image') {
             $this->addInvalidImage($phone, $url, $caption, $error);
         } else if ($type === 'document') {
-            $this->addInvalidDocument($phone, $url, $caption, $error);
+            $this->addInvalidDocument($phone, $url, $caption, $error, $params);
         }
     }
 
