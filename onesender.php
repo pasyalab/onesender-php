@@ -194,6 +194,8 @@ class OneSender {
 
         $response = curl_exec($curl);
 
+	$this->messages = [];
+	
         $error = '';
         $result = [];
 
